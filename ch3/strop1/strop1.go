@@ -14,8 +14,11 @@ func main() {
 	fmt.Printf("Contains(%s, %s) = %v\n", "world, hello", "hello", Contains("world, hello", "hello"))
 	fmt.Printf("Contains(%s, %s) = %v\n", "hello, world", "hello", Contains("hello, world", "hello"))
 
-}
+	fmt.Printf("Contains(%s, %s) = %v\n", "你haha们好，世界", "们好", Contains("你haha们好，世界", "haha们好"))
+	fmt.Printf("HasPrefix(%s, %s) = %v\n", "你们好，世界", "你们", Contains("你们好，世界", "你们"))
+	fmt.Printf("HasSuffix(%s, %s) = %v\n", "你们好，世界", "世界", Contains("你们好，世界", "世界"))
 
+}
 func HasPrefix(s, prefix string) bool {
 	return len(s) >= len(prefix) && s[:len(prefix)] == prefix
 }
