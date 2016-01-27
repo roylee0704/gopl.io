@@ -13,7 +13,7 @@ func main() {
 
 	const n = 45
 	fibN := fib(n)
-	fmt.Printf("\rFibonnaci(%d)\n", fibN)
+	fmt.Printf("\rFibonnaci(%d) = %d\n", n, fibN)
 }
 
 // fib computes fibonacci number at nth position. (in-efficient)
