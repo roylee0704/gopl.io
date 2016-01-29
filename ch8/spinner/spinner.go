@@ -14,6 +14,9 @@ func main() {
 	const n = 45
 	fibN := fib(n)
 	fmt.Printf("\rFibonnaci(%d) = %d\n", n, fibN)
+
+	time.Sleep(60 * time.Second) //to show that go-routine only exits when main routine exits.
+
 }
 
 // fib computes fibonacci number at nth position. (in-efficient)
