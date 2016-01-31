@@ -13,7 +13,7 @@ func main() {
 	listener, err := net.Listen("tcp", "localhost:8080")
 
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(err) //followed by exit(1)
 	}
 
 	for {
