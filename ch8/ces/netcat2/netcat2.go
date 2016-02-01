@@ -9,9 +9,12 @@ import (
 
 func main() {
 	conn := mustDial("tcp", "localhost:8080")
-	go mustCopy(os.Stdout, conn)
-	mustCopy(conn, os.Stdin)
+	defer conn.Close()
 
+	// go command is just to `unblock` io.read()
+	// flipping them doesn't matter.
+	go mustCopy(conn, os.Stdin)
+	mustCopy(os.Stdout, conn)
 }
 func mustDial(network string, address string) net.Conn {
 	conn, err := net.Dial(network, address)
@@ -27,4 +30,5 @@ func mustCopy(dst io.Writer, src io.Reader) {
 	if _, err := io.Copy(dst, src); err != nil {
 		log.Fatal(err)
 	}
+
 }

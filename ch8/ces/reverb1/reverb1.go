@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 	"strings"
 	"time"
 )
@@ -28,7 +29,8 @@ func main() {
 	}
 }
 
-// handleConn is gopher (meditate and imagine)
+// handleConn is one single gopher,
+// and go command enables to duplicate gopher. (meditate and imagine)
 func handleConn(c net.Conn) {
 	defer c.Close()
 
@@ -37,12 +39,16 @@ func handleConn(c net.Conn) {
 	for input.Scan() {
 		go echo(c, input.Text(), 1*time.Second)
 	}
+	// NOTE: ignoring potential errors from input.Err()
 }
 
 func echo(c net.Conn, shout string, delay time.Duration) {
 	fmt.Fprintln(c, "\t", strings.ToUpper(shout))
+	fmt.Fprintln(os.Stdout, "\t", strings.ToUpper(shout))
 	time.Sleep(delay)
 	fmt.Fprintln(c, "\t", shout)
+	fmt.Fprintln(os.Stdout, "\t", shout)
 	time.Sleep(delay)
 	fmt.Fprintln(c, "\t", strings.ToLower(shout))
+	fmt.Fprintln(os.Stdout, "\t", strings.ToUpper(shout))
 }
