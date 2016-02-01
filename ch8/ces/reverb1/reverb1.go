@@ -35,20 +35,29 @@ func handleConn(c net.Conn) {
 	defer c.Close()
 
 	//take the conn (aka phone)
-	input := bufio.NewScanner(c)
-	for input.Scan() {
-		go echo(c, input.Text(), 1*time.Second)
+	scanner := bufio.NewScanner(c)
+	for scanner.Scan() {
+		go echo(c, scanner.Text(), 3*time.Second)
 	}
-	// NOTE: ignoring potential errors from input.Err()
+
+	// NOTE: read error
+	if err := scanner.Err(); err != nil {
+		fmt.Printf("Invalid read: %s\n", err)
+	}
 }
 
 func echo(c net.Conn, shout string, delay time.Duration) {
-	fmt.Fprintln(c, "\t", strings.ToUpper(shout))
+	_, err := fmt.Fprintln(c, "\t", strings.ToUpper(shout))
 	fmt.Fprintln(os.Stdout, "\t", strings.ToUpper(shout))
 	time.Sleep(delay)
-	fmt.Fprintln(c, "\t", shout)
+	_, err = fmt.Fprintln(c, "\t", shout)
 	fmt.Fprintln(os.Stdout, "\t", shout)
 	time.Sleep(delay)
-	fmt.Fprintln(c, "\t", strings.ToLower(shout))
+	_, err = fmt.Fprintln(c, "\t", strings.ToLower(shout))
 	fmt.Fprintln(os.Stdout, "\t", strings.ToUpper(shout))
+
+	// NOTE: write error
+	if err != nil {
+		fmt.Printf("Invalid write: %s\n", err)
+	}
 }
