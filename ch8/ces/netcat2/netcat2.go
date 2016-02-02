@@ -17,10 +17,7 @@ func main() {
 	// go command is just to `unblock` io.read()
 	// flipping them doesn't affect the running state.
 
-	// Mumbling
-	// but it affect the closing state. i.e if we go routine stdin,
-	// the main program probably still be running?
-	go mustCopy(os.Stdout, conn, "listen to network input")
+	go mustCopy(os.Stdout, conn, "listen to network input: if network input closed, eof will be sent")
 	mustCopy(conn, os.Stdin, "listen to user input")
 }
 func mustDial(network string, address string) net.Conn {
@@ -35,16 +32,15 @@ func mustDial(network string, address string) net.Conn {
 
 func mustCopy(dst io.Writer, src io.Reader, who string) {
 
+	// if EOF were read, jump out of blocking call: Copy()
 	n, err := io.Copy(dst, src)
 	fmt.Println(n, who)
-	//question, i close server connection, n is returned, does it contains err?
+
+	if n == 0 {
+		fmt.Println("user closed the program with ctrl-c.", err)
+	}
+
 	if err != nil {
 		log.Fatal(err)
 	}
-	if n == 0 {
-		fmt.Println("user closed the program with ctrl-c.", err)
-
-		return
-	}
-
 }
