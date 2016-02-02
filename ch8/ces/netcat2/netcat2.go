@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"net"
@@ -9,12 +10,18 @@ import (
 
 func main() {
 	conn := mustDial("tcp", "localhost:8080")
-	defer conn.Close()
+	defer func() {
+		conn.Close()
+	}()
 
 	// go command is just to `unblock` io.read()
-	// flipping them doesn't matter.
-	go mustCopy(conn, os.Stdin)
-	mustCopy(os.Stdout, conn)
+	// flipping them doesn't affect the running state.
+
+	// Mumbling
+	// but it affect the closing state. i.e if we go routine stdin,
+	// the main program probably still be running?
+	go mustCopy(os.Stdout, conn, "listen to network input")
+	mustCopy(conn, os.Stdin, "listen to user input")
 }
 func mustDial(network string, address string) net.Conn {
 	conn, err := net.Dial(network, address)
@@ -26,9 +33,18 @@ func mustDial(network string, address string) net.Conn {
 	return conn
 }
 
-func mustCopy(dst io.Writer, src io.Reader) {
-	if _, err := io.Copy(dst, src); err != nil {
+func mustCopy(dst io.Writer, src io.Reader, who string) {
+
+	n, err := io.Copy(dst, src)
+	fmt.Println(n, who)
+	//question, i close server connection, n is returned, does it contains err?
+	if err != nil {
 		log.Fatal(err)
+	}
+	if n == 0 {
+		fmt.Println("user closed the program with ctrl-c.", err)
+
+		return
 	}
 
 }
