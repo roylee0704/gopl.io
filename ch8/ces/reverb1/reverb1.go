@@ -23,9 +23,7 @@ func main() {
 			log.Print(err)
 			continue //skip to the next connection
 		}
-
 		go handleConn(conn)
-
 	}
 }
 
@@ -39,6 +37,8 @@ func handleConn(c net.Conn) {
 	for scanner.Scan() {
 		go echo(c, scanner.Text(), 3*time.Second)
 	}
+
+	fmt.Printf("client sent eof")
 
 	// NOTE: read error
 	if err := scanner.Err(); err != nil {
