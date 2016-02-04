@@ -4,11 +4,11 @@ import "fmt"
 
 func main() {
 
-	// x, set 1 to position 1 and position 5 in 8 bits.
-	var x uint8 = 1<<1 | 1<<5 //uint8 is acronym to byte
-	var y uint8 = 1<<1 | 1<<2
+	//uint8 is acronym to byte
+	var x uint8 = 1<<1 | 1<<5 // Union {1} and {5}
+	var y uint8 = 1<<1 | 1<<2 // Union {1} and {2}
 
-	//08 is adverb of verb %b
+	//08 is adverb of verb %b, it modifies %b
 	fmt.Printf("%08b\n", x) // "00100010", the set {1, 5}
 	fmt.Printf("%08b\n", y) // "00000110", the set {1, 2}
 
