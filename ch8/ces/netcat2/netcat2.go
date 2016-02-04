@@ -18,7 +18,6 @@ func main() {
 
 	// go command is just to `unblock` io.read()
 	// flipping them doesn't affect the running state.
-
 	go mustCopy(os.Stdout, conn, "listen to network input: if network input closed, eof will be sent from server and receive here")
 
 	// the deciding power falls at gopher who sits at main thread.
