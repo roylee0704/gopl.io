@@ -11,6 +11,7 @@ func main() {
 func addEdge(from, to string) {
 	edges := graph[from]
 
+	// assignment to nil map will panic
 	if edges == nil {
 		edges = make(map[string]bool)
 		graph[from] = edges
@@ -19,5 +20,7 @@ func addEdge(from, to string) {
 }
 
 func hasEdge(from, to string) bool {
+
+	// accessing nil map is a safe operation
 	return graph[from][to]
 }
