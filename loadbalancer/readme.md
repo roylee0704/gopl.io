@@ -51,9 +51,9 @@ This is a simple version of a **Worker** but it's plausible.
 ```go
 func(w *Worker) work(done chan *Worker) {
   for {
-      req := <- w.requests
-      req.c <- req.fn()
-      done <- w
+      req := <-w.requests  // get Request from load balancer
+      req.c <- req.fn()     // call fn and send result to requester
+      done <- w             // tell balancer we've finished this job.
   }
 }
 ```
