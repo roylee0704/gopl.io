@@ -57,3 +57,7 @@ func(w *Worker) work(done chan *Worker) {
   }
 }
 ```
+
+The channel of requests (w.requests) delivers requests to each worker. The balancer tracks the number of pending requests as a measure of load.
+
+Note that each response goes directly to its requester.
