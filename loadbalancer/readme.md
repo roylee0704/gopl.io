@@ -41,3 +41,19 @@ func requester(work chan Request) {
   }
 }
 ```
+
+
+### Worker
+The balancer will send each request to the most lightly loaded worker.
+
+This is a simple version of a **Worker** but it's plausible.
+
+```go
+func(w *Worker) work(done chan *Worker) {
+  for {
+      req := <- w.requests
+      req.c <- req.fn()
+      done <- w
+  }
+}
+```
