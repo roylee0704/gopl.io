@@ -3,7 +3,7 @@ package main
 
 import "fmt"
 
-// nonempty worst-case's: o(n)
+// nonempty worst-case's: o(n), mutatable func
 func nonempty(strings []string) []string {
 	i := 0
 	for _, s := range strings {
@@ -16,7 +16,8 @@ func nonempty(strings []string) []string {
 }
 
 func main() {
-	strings := []string{"hello", "", "world", ",", "", "Roy"}
+	data := []string{"one", "", "three"}
 
-	fmt.Printf("%#v\n", nonempty(strings))
+	fmt.Printf("%q\n", nonempty(data)) //`["one" "three"]`
+	fmt.Printf("%q\n", data)           //`["one" "three" "three"]`
 }
