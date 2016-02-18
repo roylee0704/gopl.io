@@ -10,20 +10,24 @@ type Farenheit float64
 
 func main() {
 
-	var k Farenheit
-	//	var c Celcius
-	fmt.Println(k)
+	//var k Farenheit
+	var c Celcius
+	royPrint(c)
 
 }
 
 func royPrint(v interface{}) {
-	fmt.Sprintf("%gC", "D")
+	//
+	c := v.(Celcius)
 
+	//var _ = &c
+	fmt.Print(c.String())
 }
 
-func (c Celcius) String() string {
-	return fmt.Sprintf("%gC", c)
+func (c *Celcius) String() string {
+	return fmt.Sprintf("%gC\n", *c)
 }
-func (f Farenheit) String() string {
-	return fmt.Sprintf("%gF", f)
-}
+
+// func (f Farenheit) String() string {
+// 	return fmt.Sprintf("%gF", f)
+// }
