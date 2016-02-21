@@ -28,5 +28,5 @@ func main() {
 	w.Circle.Radius = 20
 	w.Spokes = 100
 
-	fmt.Println(w)
+	fmt.Printf("%#v\n", w)
 }
