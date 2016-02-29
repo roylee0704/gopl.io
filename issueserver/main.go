@@ -1,12 +1,10 @@
 package main
 
 import (
+	"html/template"
 	"log"
 	"net/http"
 	"os"
-	"text/template"
-
-	"github.com/roylee0704/gopl.io/ch4/github"
 )
 
 const templ = `<!DOCTYPE html>
@@ -38,21 +36,9 @@ const templ = `<!DOCTYPE html>
 
 var html = template.Must(template.New("issuelist").Parse(templ))
 
-func ServeSomething(w http.ResponseWriter, r *http.Request) {
-	issues, err := github.SearchIssues(os.Args[1:])
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if err := html.Execute(w, issues); err != nil {
-		log.Fatal(err)
-	}
-}
-
 func main() {
 
-	http.HandleFunc("/", ServeSomething)
-	if err := http.ListenAndServe("localhost:8989", nil); err != nil {
-		log.Fatal(err)
-	}
+	http.Handle("/", NewIssueServer(os.Args[1:], html))
+	log.Fatal(http.ListenAndServe("localhost:8989", nil))
+
 }
